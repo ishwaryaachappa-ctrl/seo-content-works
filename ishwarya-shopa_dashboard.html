@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Copy Desk — Ishwarya Achappa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --ink:#14181d;
+    --ink-2:#1c222a;
+    --ink-3:#242b35;
+    --rule:#3a4250;
+    --paper:#efe8d8;
+    --paper-dim:#c9c2ae;
+    --press:#c1442c;
+    --gold:#c99a4a;
+    --sage:#7c9280;
+    --text:#e9e4d6;
+    --text-dim:#9aa0ab;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Source Serif 4', Georgia, serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px 80px;}
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    padding:56px 28px 0;
+    text-align:center;
+    border-bottom:3px double var(--rule);
+  }
+  .eyebrow{
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  .masthead h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:600;
+    font-size:clamp(42px,7vw,84px);
+    letter-spacing:-.01em;
+    margin:0 0 6px;
+    color:var(--paper);
+  }
+  .masthead .role{
+    font-family:'Space Mono', monospace;
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    margin-bottom:28px;
+  }
+  .dateline{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    max-width:900px;
+    margin:0 auto;
+    padding:14px 0 22px;
+    font-family:'Space Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:.05em;
+    color:var(--text-dim);
+    border-top:1px solid var(--rule);
+  }
+  .dateline span:nth-child(2){color:var(--press); font-weight:700;}
+
+  /* ---------- Stat strip ---------- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:0;
+    margin-top:36px;
+    border:1px solid var(--rule);
+  }
+  .stat{
+    padding:26px 18px;
+    text-align:center;
+    border-right:1px solid var(--rule);
+    background:var(--ink-2);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(26px,3.6vw,40px);
+    color:var(--paper);
+    line-height:1;
+  }
+  .stat .lbl{
+    margin-top:8px;
+    font-family:'Space Mono', monospace;
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+
+  /* ---------- Section headers ---------- */
+  .section{margin-top:64px;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+  }
+  .section-head .no{
+    font-family:'Space Mono', monospace;
+    font-size:12px;
+    color:var(--press);
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:26px;
+    color:var(--paper);
+    margin:0;
+    flex:none;
+  }
+  .section-head .line{flex:1; height:1px; background:var(--rule);}
+  .section-sub{
+    font-family:'Space Mono', monospace;
+    font-size:11.5px;
+    color:var(--text-dim);
+    margin:-14px 0 22px;
+  }
+
+  /* ---------- Growth chart card ---------- */
+  .card{
+    background:var(--ink-2);
+    border:1px solid var(--rule);
+    padding:26px;
+  }
+  .chart-box{position:relative; height:300px;}
+
+  /* ---------- Two column ---------- */
+  .two-col{display:grid; grid-template-columns:1.1fr .9fr; gap:24px;}
+  @media(max-width:820px){ .two-col{grid-template-columns:1fr;} .stats{grid-template-columns:repeat(2,1fr);} }
+
+  .index-list{list-style:none; margin:0; padding:0;}
+  .index-list li{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:11px 0;
+    border-bottom:1px dotted var(--rule);
+    font-size:14.5px;
+  }
+  .index-list li:last-child{border-bottom:none;}
+  .index-list .name{color:var(--text);}
+  .index-list .bar-wrap{
+    flex:1;
+    margin:0 14px;
+    height:6px;
+    background:var(--ink-3);
+    position:relative;
+  }
+  .index-list .bar{
+    position:absolute; left:0; top:0; bottom:0;
+    background:var(--gold);
+  }
+  .index-list .count{
+    font-family:'Space Mono', monospace;
+    font-size:12.5px;
+    color:var(--paper-dim);
+    min-width:34px;
+    text-align:right;
+  }
+
+  /* ---------- Client roster table ---------- */
+  table.roster{width:100%; border-collapse:collapse; font-size:14px;}
+  table.roster th{
+    text-align:left;
+    font-family:'Space Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    border-bottom:1px solid var(--rule);
+    padding:0 10px 10px 0;
+  }
+  table.roster td{
+    padding:10px 10px 10px 0;
+    border-bottom:1px solid var(--ink-3);
+    vertical-align:middle;
+  }
+  table.roster tr:hover td{background:var(--ink-3);}
+  table.roster .rank{
+    font-family:'Space Mono', monospace;
+    color:var(--press);
+    font-weight:700;
+    width:34px;
+  }
+  table.roster .client-name{color:var(--paper);}
+  table.roster .sector-tag{
+    font-family:'Space Mono', monospace;
+    font-size:10px;
+    letter-spacing:.04em;
+    color:var(--sage);
+  }
+  table.roster .n{
+    font-family:'Space Mono', monospace;
+    text-align:right;
+    color:var(--paper-dim);
+  }
+  .roster-wrap{max-height:560px; overflow-y:auto;}
+  .roster-wrap::-webkit-scrollbar{width:6px;}
+  .roster-wrap::-webkit-scrollbar-thumb{background:var(--rule);}
+
+  /* ---------- pull quote / narrative strip ---------- */
+  .pull{
+    margin-top:64px;
+    padding:34px 0;
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    text-align:center;
+  }
+  .pull p{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-style:italic;
+    font-size:clamp(19px,2.4vw,26px);
+    color:var(--paper);
+    max-width:760px;
+    margin:0 auto;
+    line-height:1.45;
+  }
+  .pull .attr{
+    margin-top:14px;
+    font-family:'Space Mono', monospace;
+    font-size:11px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+
+  footer{
+    margin-top:60px;
+    padding-top:22px;
+    border-top:1px solid var(--rule);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+    font-family:'Space Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.05em;
+    color:var(--text-dim);
+  }
+
+  .legend-row{display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; font-family:'Space Mono', monospace; font-size:10.5px; color:var(--text-dim);}
+  .legend-row .dot{display:inline-block; width:9px; height:9px; margin-right:6px; vertical-align:middle;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="masthead">
+    <div class="eyebrow">A Production Record</div>
+    <h1>Ishwarya Achappa</h1>
+    <div class="role">Copy &amp; Content Writer — Shopa Marketing Digital Marketing Agency</div>
+    <div class="dateline">
+      <span id="dl-range">March 2024 — Present</span>
+      <span id="dl-total">1,426 pieces filed</span>
+      <span id="dl-clients">60 mastheads served</span>
+    </div>
+  </div>
+
+  <div class="stats" id="stat-strip"></div>
+
+  <div class="section">
+    <div class="section-head"><span class="no">01</span><h2>Output Over Time</h2><div class="line"></div></div>
+    <div class="section-sub">Pieces filed per month, March 2024 through present — colour marks the production year.</div>
+    <div class="card">
+      <div class="chart-box"><canvas id="growthChart"></canvas></div>
+      <div class="legend-row" id="growthLegend"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><span class="no">02</span><h2>The Desk's Beat</h2><div class="line"></div></div>
+    <div class="section-sub">What gets written, and for whom.</div>
+    <div class="two-col">
+      <div class="card">
+        <div style="font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px;">By format</div>
+        <ul class="index-list" id="typeList"></ul>
+      </div>
+      <div class="card">
+        <div style="font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); margin-bottom:16px;">By sector</div>
+        <ul class="index-list" id="sectorList"></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull">
+    <p id="pullQuote">—</p>
+    <div class="attr">Editor's Note</div>
+  </div>
+
+  <div class="section">
+    <div class="section-head"><span class="no">03</span><h2>The Client Roster</h2><div class="line"></div></div>
+    <div class="section-sub">Every masthead on the beat, ranked by pieces filed.</div>
+    <div class="card roster-wrap">
+      <table class="roster">
+        <thead>
+          <tr><th class="rank">#</th><th>Client</th><th>Sector</th><th style="text-align:right;">Pieces</th></tr>
+        </thead>
+        <tbody id="rosterBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    <span>Compiled from Shopa Marketing's internal work log, Mar 2024 – present.</span>
+    <span>Client and format counts reflect completed / logged work only.</span>
+  </footer>
+
+</div>
+
+<script>
+const DATA = {"total": 1426, "unique_clients": 60, "type_counts": {"Blog Content Review": 173, "Blog": 921, "Website Content": 214, "Website Content Review": 116, "Blog Post": 2}, "sector_counts": {"Other / Misc": 156, "Real Estate": 93, "Retail & Consumer Products": 70, "Dental": 191, "Disability Support (NDIS)": 227, "Marketing / Agency": 267, "Aged & Home Care": 131, "Legal": 1, "Automotive": 1, "Health & Wellness": 102, "Solar & Energy": 30, "Early Childhood Education": 51, "Accounting & Tax": 106}, "new_content": 1137, "reviews": 289, "yearly": {"2024": 394, "2025": 600, "2026": 432}, "monthly": {"2024-03": 26, "2024-04": 39, "2024-05": 43, "2024-06": 35, "2024-07": 47, "2024-08": 38, "2024-09": 38, "2024-10": 49, "2024-11": 36, "2024-12": 43, "2025-01": 47, "2025-02": 50, "2025-03": 66, "2025-04": 38, "2025-05": 55, "2025-06": 38, "2025-07": 70, "2025-08": 52, "2025-09": 39, "2025-10": 50, "2025-11": 55, "2025-12": 40, "2026-01": 52, "2026-02": 71, "2026-03": 71, "2026-04": 52, "2026-05": 45, "2026-06": 54, "2026-07": 70, "2026-08": 17}, "top_clients": [["Infinity22", 102], ["RS Dental", 67], ["Parkmore Family Dental", 65], ["Kesh \u2013 Finance Solution", 63], ["Shopa Marketing (in-house)", 62], ["Wright Way Realty", 60], ["International Commercial Services", 50], ["Clear Care Community", 49], ["Sydney Podiatry", 47], ["TK Community Care", 46], ["Roly's Mobiles", 44], ["Bur-Del Co-Operative", 41], ["ACAOO", 33], ["Dream Big Support Services", 30], ["SPS Energy", 30], ["TaxByte", 30], ["SEO Only", 29], ["The Angels", 28], ["Gorgeous Curtains", 27], ["Beginnings Early Learners", 27], ["Aotea Electrics", 26], ["Accesible & Short Term Accomodation", 26], ["Oasis Garden Village", 24], ["Vision Bible College", 24], ["AM Counseling Services", 24], ["Brand Vantage", 24], ["Sydney Real Estate Group", 23], ["Dayaram Care Services", 22], ["ACT Safety", 22], ["Home of Choice & Care", 19], ["Cam Can", 19], ["Oatlands Golf Club", 18], ["Leah Betts Nursing Services", 18], ["Nundah Central Dental", 18], ["Dream Building & Design", 17], ["Love Home Nursing", 15], ["Radiology Imaging Solutions", 13], ["Sonic Performance and Production Sydney", 13], ["Vedalekha", 13], ["Apollo Motorcycles & ATV Australia", 12], ["All About You Disability Support Services", 12], ["Brisbane South Hypnotherapy", 11], ["Liz Miles Real Estate", 10], ["Learning Blocks Dural", 9], ["Simply Braces", 8], ["Edu Kids", 8], ["Deb's Design Lab", 7], ["Mini Mates", 7], ["Psych Plus Services", 7], ["Braidwood Advanced Care", 5], ["Austack Saddlery Produce", 4], ["Smilexcellence", 4], ["Sparkling White Dental", 4], ["Joshua Tree Home Support", 2], ["Imperial Painting Mildura", 2], ["Baden Bower", 2], ["Visa Tec Legal", 1], ["BPB Auto", 1], ["Choice Care Australia", 1], ["Serenity Solutions", 1]], "client_sector": {"Aotea Electrics": "Other / Misc", "Wright Way Realty": "Real Estate", "Roly's Mobiles": "Retail & Consumer Products", "Parkmore Family Dental": "Dental", "Accesible & Short Term Accomodation": "Disability Support (NDIS)", "Austack Saddlery Produce": "Retail & Consumer Products", "RS Dental": "Dental", "Home of Choice & Care": "Disability Support (NDIS)", "Shopa Marketing (in-house)": "Marketing / Agency", "Simply Braces": "Retail & Consumer Products", "TK Community Care": "Disability Support (NDIS)", "Joshua Tree Home Support": "Disability Support (NDIS)", "Oasis Garden Village": "Aged & Home Care", "Visa Tec Legal": "Legal", "Bur-Del Co-Operative": "Aged & Home Care", "BPB Auto": "Automotive", "Dream Big Support Services": "Disability Support (NDIS)", "Choice Care Australia": "Disability Support (NDIS)", "Clear Care Community": "Disability Support (NDIS)", "Sydney Real Estate Group": "Real Estate", "Dream Building & Design": "Other / Misc", "Radiology Imaging Solutions": "Health & Wellness", "Infinity22": "Marketing / Agency", "Dayaram Care Services": "Disability Support (NDIS)", "SPS Energy": "Solar & Energy", "ACT Safety": "Other / Misc", "Sonic Performance and Production Sydney": "Other / Misc", "Deb's Design Lab": "Other / Misc", "Vision Bible College": "Other / Misc", "Brisbane South Hypnotherapy": "Health & Wellness", "Liz Miles Real Estate": "Real Estate", "Apollo Motorcycles & ATV Australia": "Retail & Consumer Products", "Oatlands Golf Club": "Other / Misc", "Imperial Painting Mildura": "Other / Misc", "Gorgeous Curtains": "Other / Misc", "The Angels": "Aged & Home Care", "Sydney Podiatry": "Health & Wellness", "Beginnings Early Learners": "Early Childhood Education", "AM Counseling Services": "Health & Wellness", "Cam Can": "Disability Support (NDIS)", "Leah Betts Nursing Services": "Aged & Home Care", "International Commercial Services": "Marketing / Agency", "Braidwood Advanced Care": "Aged & Home Care", "Kesh \u2013 Finance Solution": "Accounting & Tax", "All About You Disability Support Services": "Disability Support (NDIS)", "Edu Kids": "Early Childhood Education", "Learning Blocks Dural": "Early Childhood Education", "ACAOO": "Dental", "TaxByte": "Accounting & Tax", "Mini Mates": "Early Childhood Education", "Brand Vantage": "Marketing / Agency", "Nundah Central Dental": "Dental", "SEO Only": "Marketing / Agency", "Vedalekha": "Accounting & Tax", "Love Home Nursing": "Aged & Home Care", "Serenity Solutions": "Disability Support (NDIS)", "Smilexcellence": "Dental", "Psych Plus Services": "Health & Wellness", "Baden Bower": "Retail & Consumer Products", "Sparkling White Dental": "Dental"}};
+
+const SECTOR_COLORS = {
+  'Marketing / Agency':'#c1442c',
+  'Disability Support (NDIS)':'#c99a4a',
+  'Dental':'#7c9280',
+  'Other / Misc':'#5c6470',
+  'Aged & Home Care':'#8a6fae',
+  'Accounting & Tax':'#4c8fa3',
+  'Health & Wellness':'#b56b8f',
+  'Real Estate':'#a3763c',
+  'Retail & Consumer Products':'#6b9e5e',
+  'Early Childhood Education':'#d18cae',
+  'Solar & Energy':'#e0b23e',
+  'Legal':'#8b8b8b',
+  'Automotive':'#7a7a7a'
+};
+
+const YEAR_COLORS = {'2024':'#7c9280','2025':'#c99a4a','2026':'#c1442c'};
+
+function fmt(n){ return n.toLocaleString('en-US'); }
+
+// ---- Dateline ----
+document.getElementById('dl-total').textContent = fmt(DATA.total) + ' pieces filed';
+document.getElementById('dl-clients').textContent = DATA.unique_clients + ' mastheads served';
+
+// ---- Stat strip ----
+const months = Object.keys(DATA.monthly).sort();
+const monthsActive = months.length;
+const y = DATA.yearly;
+const strip = [
+  {num: fmt(DATA.total), lbl:'Total Pieces Filed'},
+  {num: DATA.unique_clients, lbl:'Clients Served'},
+  {num: Object.keys(DATA.sector_counts).length - 1, lbl:'Industry Sectors'},
+  {num: monthsActive, lbl:'Months in Production'},
+  {num: (y['2026'] ? (y['2026']/8).toFixed(0) : '—'), lbl:"Avg / Month, 2026"}
+];
+document.getElementById('stat-strip').innerHTML = strip.map(s=>`<div class="stat"><div class="num">${s.num}</div><div class="lbl">${s.lbl}</div></div>`).join('');
+
+// ---- Format list ----
+const typeOrder = Object.entries(DATA.type_counts).sort((a,b)=>b[1]-a[1]);
+const typeMax = typeOrder[0][1];
+const typeLabels = {'Blog':'Blog Posts','Website Content':'Website Content','Blog Content Review':'Blog Content Review','Website Content Review':'Website Content Review','Blog Post':'Blog Post'};
+document.getElementById('typeList').innerHTML = typeOrder.map(([t,c])=>`
+  <li><span class="name">${typeLabels[t]||t}</span>
+  <span class="bar-wrap"><span class="bar" style="width:${(c/typeMax*100).toFixed(0)}%"></span></span>
+  <span class="count">${fmt(c)}</span></li>
+`).join('');
+
+// ---- Sector list ----
+const sectorOrder = Object.entries(DATA.sector_counts).filter(([s])=>s!=='Other / Misc').sort((a,b)=>b[1]-a[1]);
+sectorOrder.push(['Other / Misc', DATA.sector_counts['Other / Misc']]);
+const sectorMax = Math.max(...sectorOrder.map(x=>x[1]));
+document.getElementById('sectorList').innerHTML = sectorOrder.map(([s,c])=>`
+  <li><span class="name">${s}</span>
+  <span class="bar-wrap"><span class="bar" style="width:${(c/sectorMax*100).toFixed(0)}%; background:${SECTOR_COLORS[s]||'#888'}"></span></span>
+  <span class="count">${fmt(c)}</span></li>
+`).join('');
+
+// ---- Roster table ----
+const rosterBody = document.getElementById('rosterBody');
+rosterBody.innerHTML = DATA.top_clients.map((row,i)=>{
+  const [client, count] = row;
+  const sector = DATA.client_sector[client] || 'Other / Misc';
+  return `<tr><td class="rank">${i+1}</td><td class="client-name">${client}</td><td class="sector-tag">${sector}</td><td class="n">${count}</td></tr>`;
+}).join('');
+
+// ---- Pull quote ----
+const topClient = DATA.top_clients[0];
+const growth = y['2026'] && y['2024'] ? Math.round(((y['2026']/8)/(y['2024']/10) - 1)*100) : null;
+document.getElementById('pullQuote').textContent =
+  `Since March 2024, the desk has filed ${fmt(DATA.total)} pieces across ${DATA.unique_clients} client accounts — from NDIS providers to dental clinics to real estate firms — averaging ${growth!==null ? growth+'% more output per month in 2026 than in the first year on the desk.' : 'steady monthly output.'}`;
+
+// ---- Growth chart (last, and isolated: a chart failure should not block anything above) ----
+try{
+  const monthLabels = months.map(m=>{
+    const [yr,mo] = m.split('-');
+    const d = new Date(parseInt(yr), parseInt(mo)-1, 1);
+    return d.toLocaleDateString('en-US',{month:'short'}) + " '" + yr.slice(2);
+  });
+  const monthVals = months.map(m=>DATA.monthly[m]);
+  const monthColors = months.map(m=>YEAR_COLORS[m.split('-')[0]] || '#888');
+
+  if (typeof Chart === 'undefined') throw new Error('Chart.js failed to load');
+
+  new Chart(document.getElementById('growthChart'), {
+    type:'bar',
+    data:{
+      labels: monthLabels,
+      datasets:[{
+        data: monthVals,
+        backgroundColor: monthColors,
+        borderRadius:2,
+        maxBarThickness:22
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ backgroundColor:'#1c222a', titleColor:'#efe8d8', bodyColor:'#efe8d8', borderColor:'#3a4250', borderWidth:1,
+          callbacks:{ label: (ctx)=> ctx.parsed.y + ' pieces' } }
+      },
+      scales:{
+        x:{ ticks:{ color:'#9aa0ab', font:{family:"'Space Mono', monospace", size:10}, maxRotation:0, autoSkip:true, maxTicksLimit:16 }, grid:{ display:false } },
+        y:{ ticks:{ color:'#9aa0ab', font:{family:"'Space Mono', monospace", size:10} }, grid:{ color:'#242b35' }, beginAtZero:true }
+      }
+    }
+  });
+  document.getElementById('growthLegend').innerHTML = Object.entries(YEAR_COLORS).map(([yr,c])=>
+    `<span><span class="dot" style="background:${c}"></span>${yr} — ${fmt(y[yr]||0)} pieces</span>`
+  ).join('');
+} catch(err){
+  document.querySelector('.chart-box').innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:\'Space Mono\',monospace;font-size:12px;color:#9aa0ab;">Chart failed to load: ' + err.message + '</div>';
+}
+</script>
+</body>
+</html>
